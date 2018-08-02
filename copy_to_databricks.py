@@ -81,23 +81,27 @@ for _file in glob.glob(_my_args.source_path):
     print ("Copying :", _file, "to", _my_args.destination_path)
     try:
         if (_my_args.overwrite):
-            subprocess.run(["databricks",
+            print (subprocess.run(["databricks",
                 "fs",
                 "cp",
                 _file, 
                 _my_args.destination_path,
                 "--overwrite"]
+                , capture_output=True)
                 )
         else:
-            subprocess.run(["databricks",
+            print (subprocess.run(["databricks",
                 "fs",
                 "cp",
                 _file, 
                 _my_args.destination_path]
+                , capture_output=True)
                 )
+            
         if (_my_args.sleep_between_copy_msec != 0):
             print ("Sleeping ", _my_args.sleep_between_copy_msec/1000, "seconds")
             time.sleep(_my_args.sleep_between_copy_msec/1000)
     except:
         retry_counter = retry_counter+1
+        print ("ERROR!")
 
